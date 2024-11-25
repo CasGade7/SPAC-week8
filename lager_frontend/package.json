@@ -2,6 +2,7 @@
   "name": "lager_frontend",
   "private": true,
   "version": "0.0.0",
+  "proxy": "http://localhost:50050",
   "type": "module",
   "scripts": {
     "dev": "vite",
