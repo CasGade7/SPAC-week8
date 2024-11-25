@@ -2,7 +2,7 @@
 FROM python:3.12
 
 # Sæt arbejdsbibliotek
-WORKDIR /SPAC-week6-7
+WORKDIR /Lager_Backend
 
 # Kopier requirements filen og installer afhængigheder
 COPY requirements.txt .

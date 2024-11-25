@@ -11,7 +11,7 @@
 
 db_config = dict(
     user = "root",
-    password = "Velkommen24",
+    password = "root",
     host = "localhost", # "localhost" or other address, will connect to MySQL's default port
     database = "test_db"
 )
