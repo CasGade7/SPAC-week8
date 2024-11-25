@@ -4,3 +4,4 @@ mysql-connector-python==9.1.0
 Requests==2.32.3
 setuptools==75.5.0
 waitress==3.0.2
+Flask-Cors==5.0.0

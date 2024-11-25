@@ -1,5 +1,6 @@
 from typing import Any
 from flask import Flask, Request, jsonify, request, Response
+from flask_cors import CORS
 from ..models.products import Product
 from ..db.adapters.product_adapter import ProductAdapter
 from ..db.db_connection import DbConnection
@@ -8,6 +9,8 @@ from ..db import error as db_err
 
 api = Flask(__name__)
 
+# Aktiver CORS for alle ruter
+CORS(api)
 
 def _validate_product_request_fields(
     product_data: dict[str, Any]
