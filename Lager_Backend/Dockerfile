@@ -2,7 +2,7 @@
 FROM python:3.12
 
 # Sæt arbejdsbibliotek
-WORKDIR /Lager_Backend
+WORKDIR /lager_backend
 
 # Kopier requirements filen og installer afhængigheder
 COPY requirements.txt .
