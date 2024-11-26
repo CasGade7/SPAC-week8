@@ -11,20 +11,27 @@ function ItemsList() {
                 }
                 return response.json();
             })
-            .then(data => setItems(data))
+            .then(data => {
+                console.log(data); // Se hvad der returneres fra API'en
+                setItems(data);
+            })
             .catch(error => console.error('There was a problem with the fetch operation:', error));
     }, []);
 
 
     return (
         <ul>
-            {items.map((product) => (
+            {items.length === 0 ? (
+            <li>No products available.</li>
+        ) : (
+            items.map((product) => (
                 <li key={product.ID}>
                     <h3>{product.Name}</h3>
                 
                 
                 </li>
-            ))}
+            ))
+        )}
         </ul>
     );
 }
