@@ -5,3 +5,8 @@
 h1{
   font-size: 35px;
 }
+ul li, .ProductDetail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
