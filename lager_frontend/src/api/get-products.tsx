@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import DeleteButton from './handle-delete';
+import AddButton from './add-product-button';
 
 const ProductsList = () => {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [filter, setFilter] = useState(''); // State til at holde filteret
+    const [searchTerm, setSearchTerm] = useState(''); // State til søgeteksten
 
-    const getAllProducts = async (filter = null) => {
+    const getAllProducts = async (filter = null, searchTerm = '') => {
         try {
-            const response = await fetch(`http://localhost:50050/api/products?type_filter=${filter}`);
+            const response = await fetch(`http://localhost:50050/api/products?type_filter=${filter}&search=${searchTerm}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -22,8 +26,28 @@ const ProductsList = () => {
     };
 
     useEffect(() => {
-        getAllProducts('Clothing'); // Hent produkter uden filter
-    }, []);
+        // Debounce søgning for at undgå for mange API-anmodninger
+        const handler = setTimeout(() => {
+            getAllProducts(filter, searchTerm); // Hent produkter med valgt filter og søgetekst
+        }, 300); // 300 ms debounce tid
+
+        return () => {
+            clearTimeout(handler); // Ryd op i timeouten, når komponenten unmountes eller når dependencies ændres
+        };
+    }, [filter, searchTerm]); // Kald funktionen hver gang filteret eller søgeteksten ændres
+
+    const handleFilterChange = (event) => {
+        setFilter(event.target.value); // Opdater filteret baseret på dropdown-valget
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value); // Opdater søgeteksten
+        // Opdater listen automatisk baseret på søgeteksten
+    };
+
+    const handleRefresh = () => {
+        getAllProducts(filter); // Opdater listen ved at kalde getAllProducts igen
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -34,27 +58,50 @@ const ProductsList = () => {
     }
 
     return (
-        <ul>
-            {items.length === 0 ? (
-                <li>No products available.</li>
-            ) : (
-                items.map((item) => {
-                    console.log(item); // Log hvert item
-                    return (
-                        <li key={item.Descriptor.ID}>
-                            <h3>{item.Product.Name}</h3>
-                            <p>Produkt ID: {item.Descriptor.ID}</p>
-                            <p>Description: {item.Product.Description}</p>
-                            <p>Price: ${item.Product.Price}</p>
-                            <p>Color: {item.Product.Color}</p>
-                            <p>Size: {item.Product.Size}</p>
-                            <p>Material: {item.Product.Material}</p>
-                            <p>Quantity: {item.Product.Quantity}</p>
-                        </li>
-                    );
-                })
-            )}
-        </ul>
+        <div>
+            <label htmlFor="productFilter">Vælg produkt type:</label>
+            <select id="productFilter" value={filter} onChange={handleFilterChange}>
+                <option value="">Vælg produkt type</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Book">Book</option>
+                {/* Tilføj flere typer efter behov */}
+            </select>
+            <button onClick={handleRefresh}>Opdater liste</button>
+
+            {/* Inputfelt til søgning */}
+            <label htmlFor="searchInput">Søg efter produkt:</label>
+            <input 
+                type="text" 
+                id="searchInput" 
+                value={searchTerm} 
+                onChange={handleSearchChange} 
+                placeholder="Indtast produktnavn..." 
+            />
+            <AddButton onAddProduct={handleRefresh} />
+
+            <ul>
+                {items.length === 0 ? (
+                    <li>No products available.</li>
+                ) : (
+                    items.map((item) => {
+                        console.log(item); // Log hvert item
+                        return (
+                            <li key={item.Descriptor.ID}>
+                                <h3>{item.Product.Name}</h3>
+                                <p>Produkt ID: {item.Descriptor.ID}</p>
+                                <p>Description: {item.Product.Description}</p>
+                                <p>Price: ${item.Product.Price}</p>
+                                <p>Color: {item.Product.Color}</p>
+                                <p>Size: {item.Product.Size}</p>
+                                <p>Material: {item.Product.Material}</p>
+                                <p>Quantity: {item.Product.Quantity}</p>
+                                <DeleteButton item={item} onDelete={handleRefresh} />
+                            </li>
+                        );
+                    })
+                )}
+            </ul>
+        </div>
     );
 };
 
