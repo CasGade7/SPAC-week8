@@ -5,7 +5,7 @@ function Header() {
       <>
         <div className="header">
           <div className='overskrift'>
-            <h1>Cerial Lagerstyringssystem</h1>
+            <h1>Lagerstyringssystem</h1>
           </div>
         </div>
       </>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DeleteButton from './handle-delete';
 import AddButton from './add-product-button';
+import SetButton from './handle-set-product';
 
 const ProductsList = () => {
     const [items, setItems] = useState([]);
@@ -32,7 +33,7 @@ const ProductsList = () => {
         }, 300); // 300 ms debounce tid
 
         return () => {
-            clearTimeout(handler); // Ryd op i timeouten, når komponenten unmountes eller når dependencies ændres
+            clearTimeout(handler); // Ryd op i timeouten
         };
     }, [filter, searchTerm]); // Kald funktionen hver gang filteret eller søgeteksten ændres
 
@@ -42,7 +43,6 @@ const ProductsList = () => {
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value); // Opdater søgeteksten
-        // Opdater listen automatisk baseret på søgeteksten
     };
 
     const handleRefresh = () => {
@@ -68,7 +68,7 @@ const ProductsList = () => {
             </select>
             <button onClick={handleRefresh}>Opdater liste</button>
 
-            {/* Inputfelt til søgning */}
+            {/*Inputfelt til søgning*/}
             <label htmlFor="searchInput">Søg efter produkt:</label>
             <input 
                 type="text" 
@@ -96,6 +96,7 @@ const ProductsList = () => {
                                 <p>Material: {item.Product.Material}</p>
                                 <p>Quantity: {item.Product.Quantity}</p>
                                 <DeleteButton item={item} onDelete={handleRefresh} />
+                                <SetButton item={item} onSetProduct={handleRefresh} />
                             </li>
                         );
                     })

@@ -53,7 +53,7 @@ const AddProduct = () => {
             }
 
             setSuccess(true);
-            // Reset the form if needed
+            // Reset form
             setProduct({
                 type: '',
                 name: '',

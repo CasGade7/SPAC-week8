@@ -62,9 +62,9 @@ const AddProductModel = ({ onAddProduct }) => {
         }
     };
 
-const onAddProductModelButtonClick = () => {
-    setIsOpen(true);
-};
+    const onAddProductModelButtonClick = () => {
+        setIsOpen(true);
+    };
 
     return (
         <div>
@@ -73,7 +73,7 @@ const onAddProductModelButtonClick = () => {
             <Popup trigger=
                 {<button onClick={onAddProductModelButtonClick}>Add Product</button>}
                 position="right center"
-                open={isOpen} // Tilføj denne linje
+                open={isOpen}
                 onClose={() => setIsOpen(false)}
                 contentStyle={{
                     width: '300px',
